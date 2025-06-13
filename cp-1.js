@@ -1,4 +1,4 @@
-console.clear();
+/* console.clear();
 
 const slider = document.querySelector('.slider');
 const items = document.querySelectorAll('.slider-item');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   playTl()
 });
-
+*/
 
 /* slider.addEventListener('click', e => {
   playTl();
