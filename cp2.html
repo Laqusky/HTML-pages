@@ -4,294 +4,155 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TimelineMax.min.js"></script>
     <script>
-      let index = 0;
-const url = "https://www.omdbapi.com/?s=star+wars&apikey=f94e2e41";
-const mykey =
-  "http://www.omdbapi.com/?t=breaking+bad&plot=full&apikey=77fe56c8";
-let movies = [];
-let transform = [];
-let zIndex = [];
-
-fetchData = url => {
-  fetch(url)
-    .then(response => response.json())
-    .then(json => {
-      movies = json.Search;
-      loadData();
-    })
-    .catch(err => {
-      console.log(err.message, url);
-    });
-};
-function loadData() {
-  const container = document.getElementById("slideContainer");
-  let i;
-  for (i = 0; i < movies.length; i++) {
-    transform.push(`translate3d(${i * 150}px, 0px, -${i * 1000}px)`);
-    zIndex.push(`-${i}`);
-    const movie = movies[i];
-    const slide = document.createElement("div");
-
-    const item = document.createElement("div");
-    const text = document.createElement("div");
-    const image = document.createElement("img");
-    const title = document.createElement("h1");
-    const year = document.createElement("h2");
-
-    const titleNode = document.createTextNode(movie.Title);
-    const yearNode = document.createTextNode(movie.Year);
-
-    slide.setAttribute("class", "slide");
-    item.setAttribute("class", "item");
-
-    image.setAttribute("class", "img");
-    image.setAttribute("src", movie.Poster);
-    image.setAttribute("alt", movie.Title);
-
-    text.setAttribute("class", "text");
-
-    title.setAttribute("class", "title");
-    year.setAttribute("class", "year");
-
-    title.appendChild(titleNode);
-    year.appendChild(yearNode);
-
-    text.appendChild(title);
-    text.appendChild(year);
-
-    item.appendChild(image);
-    item.appendChild(text);
-
-    slide.appendChild(item);
-    container.appendChild(slide);
+      var swiper = new Swiper(".swiper-container", {
+  effect: "coverflow",
+  grabCursor: true,
+  centeredSlides: true,
+  slidesPerView: "auto",
+  coverflowEffect: {
+    rotate: 20,
+    stretch: 0,
+    depth: 350,
+    modifier: 1,
+    slideShadows: true
+  },
+  pagination: {
+    el: ".swiper-pagination"
   }
-  if (i === movies.length) {
-    showSlide(index);
-  }
-}
-//RE-ASSIGN VALUE AT FIRST INDEX => LAST
-function onChange(toIndex) {
-  if (toIndex === 1) {
-    transform.unshift(transform[transform.length - 1]);
-    transform.pop();
-    zIndex.unshift(zIndex[zIndex.length - 1]);
-    zIndex.pop();
-  } else {
-    transform.push(transform[0]);
-    transform.shift();
-    zIndex.push(zIndex[0]);
-    zIndex.shift();
-  }
-  showSlide((index += toIndex));
-}
-function showSlide(toIndex) {
-  let i;
-  const slides = document.getElementsByClassName("slide");
-  const text = document.getElementsByClassName("text");
-  if (toIndex >= slides.length) {
-    index = 0;
-  }
-  if (toIndex < 0) {
-    index = slides.length - 1;
-  }
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.transform = transform[i];
-    slides[i].style.zIndex = zIndex[i];
-    text[i].style.opacity = index === i ? 1 : 0;
-  }
-}
-function mapStars() {
-  const container = document.getElementById("starField");
-  for (let i = 0; i < window.innerWidth; i++) {
-    const star = document.createElementNS('http://www.w3.org/2000/svg',"circle");
-
-    star.setAttribute("cx", Math.random() * window.innerWidth);
-    star.setAttribute("cy", Math.random() * window.innerHeight);
-    star.setAttribute("fill", "#eee");
-    star.setAttribute("opacity", Math.random());
-    star.setAttribute("r", Math.random() + 1);
-    container.appendChild(star);
-  }
-}
-mapStars();
-fetchData(url);
+});
 
     </script>
     <style>
-      @import url("https://fonts.googleapis.com/css?family=Bungee+Hairline");
-
-html {
-  padding: 0;
-  margin: 0;
-  max-height: 100vh;
-  overflow-x: hidden;
-  font-size: 16px;
-  font-family: "Bungee Hairline", cursive;
-}
-body {
-  background-color: #112;
-}
-.button {
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-  border: 2px solid;
-  border-color: white;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  transition: all 300ms;
-}
-.button:hover {
-   transform: scale(1.1);
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),
-    0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
-}
-#backButton {
-  background: white
-  url("https://firebasestorage.googleapis.com/v0/b/chris-rohr.appspot.com/o/codepen%2FGalactic_Empire_emblemIcon.png?alt=media&token=e00975c9-4f10-40fc-862a-3d8ecdc6ad02")
-    no-repeat center;
-  background-size: 48px 48px;
-  
-}
-#backButton:hover {
- 
-}
-#nextButton {
-  background: white
-    url("https://firebasestorage.googleapis.com/v0/b/chris-rohr.appspot.com/o/codepen%2FRebel_Alliance_logoIcon.png?alt=media&token=ffd9eccf-ed00-4556-bd53-d82832cca412")
-    no-repeat center;
-  background-size: 48px 48px;
-}
-#nextButton:hover {
-}
-.buttonContainer {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  top: calc(50% - 56px/2);
-  margin: auto;
-  padding: 0px 128px;
-  width: calc(100% - 256px);
-  z-index: 1;
-}
-@media only screen and (max-width: 1200px) {
-  .buttonContainer {
-   top: calc(90% - 56px);
-      padding: 0px 32px;
-  width: calc(100% - 64px);
-  }
-}
-.container {
-  margin: auto;
-  height: 100%;
-  width: 100%;
-}
-.img {
-  margin: auto 16px;
-  object-fit: contain;
-  transition: transform 300ms;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-}
-@media only screen and (max-width: 600px) {
-  .img {
-      height: calc(50vh - 32px);
-  }
-}
-.img:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),
-    0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
-}
-
-.item {
-  height: 90%;
-  width: 90%;
-  
-}
-.slide {
-  position: absolute;
-  height: 80vh;
-  width: 100%;
-  margin: auto;
+      body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform-style: preserve-3d;
-  transition: transform 500ms;
-}
-.slideContainer {
-  height: calc(100vh - 32px);
-  max-width: 1000px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  perspective: 5000px;
-}
-@media only screen and (max-width: 1200px) {
-  .slideContainer {
-    perspective: 3000px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .slideContainer {
-    perspective: 1500px;
-  }
-}
-.star {
-  height: 15px;
-  width: 15px;
-}
-#starField {
- position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 0;
+  min-height: 100vh;
+  background: #fff;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  background-color: #212121;
+  margin: 0;
+  padding: 0;
 }
 
-.text {
-  padding: 0 16px;
-    transition: opacity 1s;
-}
-.title {
-  font-size: 2rem;
-  color: white;
-  line-height: 2rem;
-}
-.year {
-  font-size: 1.5rem;
-  color: white;
-  opacity: 0.8;
-}
-@media only screen and (max-width: 600px) {
-.title {
-  font-size: 1.5em;
-  color: white;
-  line-height: 1.5rem;
-}
-.year {
-  font-size: 1rem;
-  color: white;
-  opacity: 0.8;
-}
+.swiper-container {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 320px;
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.picture {
+  width: 320px;
+  height: 320px;
+  overflow: hidden;
+  
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.detail {
+  padding: 25px 20px;
+  font-weight: 600;
+  text-align: center;
+  
+  h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  span {
+    display: block;
+    font-size: 16px;
+    color: #f44336;
+  }
+}
     </style>
   </head>
   <body>
-<div id="container" class="container">
-<svg id="starField"/>
-  <div class="buttonContainer">
-    <button id="backButton" onclick="onChange(-1)" class="button" aria-label="back_button"/>
-    <button id="nextButton" onclick="onChange(+1)" class="button" aria-label="next_button"/>
+<!-- Slider main container -->
+<div class="swiper-container">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6b4e41a670c097c8fd2834579f5d5958&auto=format&fit=crop&w=633&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Marie Edwards</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=49899e285952107fdfd9415b8d3bf74a&auto=format&fit=crop&w=634&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Kelly Woods</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-0.3.5&s=739aef35459daa8aaeaa55363d492bc1&auto=format&fit=crop&w=673&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Roger Rice</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1502768040783-423da5fd5fa0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c6416353c255d2746a68c8a83943bdf&auto=format&fit=crop&w=634&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Jessica Garcia</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9a138cf8acd85036bd292d7f10074e79&auto=format&fit=crop&w=634&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Sean Adams</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="picture">
+        <img src="https://images.unsplash.com/photo-1500080209535-717dd4ebaa6b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ddee81e2e574e8190b07139ddb0f1938&auto=format&fit=crop&w=687&q=80" alt="">
+      </div>
+      <div class="detail">
+        <h3>Crystal Davidson</h3>
+        <span>Web Designer</span>
+      </div>
+    </div>
   </div>
-  <div id="slideContainer" class="slideContainer" />
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- If we need navigation buttons -->
+  <!--     <div class="swiper-button-prev"></div> -->
+  <!--     <div class="swiper-button-next"></div> -->
+
+  <!-- If we need scrollbar -->
+  <div class="swiper-scrollbar"></div>
 </div>
   </body>
 </html>
