@@ -28,7 +28,32 @@ function playTl() {
     })
 };
 
-slider.addEventListener('click', e => {
+document.addEventListener('DOMContentLoaded', () => {
+  // Your existing code here
+  slider.addEventListener('click', e => {
+    playTl();
+
+    items.forEach(item => {
+      if (item.dataset.index > 0) {
+        item.dataset.index--;
+        console.log(item);
+      } else {
+        item.dataset.index = items.length - 1;
+        // console.log(item.style.transform);
+      }
+
+    });
+
+    // document.querySelector('[data-index="0"]').style.animation = "toBottom 1s forwards";
+    // document.querySelector('[data-index="1"]').style.animation = "toTop1 1s forwards";
+    // document.querySelector('[data-index="2"]').style.animation = "toTop2 1s forwards";
+  });
+
+  playTl()
+});
+
+
+/* slider.addEventListener('click', e => {
   playTl();
 
   items.forEach(item => {
@@ -47,4 +72,4 @@ slider.addEventListener('click', e => {
   // document.querySelector('[data-index="2"]').style.animation = "toTop2 1s forwards";
 });
 
-playTl()
+playTl() */
