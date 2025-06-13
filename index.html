@@ -29,5 +29,59 @@
     </div>
   </div>
 </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  console.clear();
+
+  const slider = document.querySelector('.slider');
+  const items = document.querySelectorAll('.slider-item');
+  const dist = 15;
+
+  // 檢查 slider 是否成功選取到元素
+  if (!slider) {
+    console.error("錯誤：找不到 class 為 'slider' 的元素。");
+    return; // 如果找不到，則停止執行後續程式碼
+  }
+
+  function playTl() {
+    let tl = new TimelineMax();
+      tl.to(document.querySelector('[data-index="0"]'), .3, {
+          transform:"translateX(110%) translateZ(0) translateY(0)"
+        })
+        .add('here', .2)
+        .to(document.querySelector('[data-index="0"]'), .4, {
+          transform:`translateX(100%) translateZ(-<span class="math-inline">\{\(items\.length\) \* dist\}px\) translateY\(\-</span>{(items.length) * dist}px) `
+        })
+        .to(document.querySelector('[data-index="0"]'), .3, {
+          transform:`translateX(0) translateZ(-<span class="math-inline">\{\(items\.length\) \* dist\}px\) translateY\(\-</span>{(items.length) * dist}px) `
+        }, "-=.2")
+
+      items.forEach(item => {
+        if (item.dataset.index > 0) {
+          tl.to(item, .5, {
+            transform:`translateX(0) translateZ(-<span class="math-inline">\{item\.dataset\.index \* dist\}px\) translateY\(\-</span>{item.dataset.index * dist}px)`
+          }, 'here')
+        }
+      })
+  };
+
+  slider.addEventListener('click', e => {
+    playTl();
+
+    items.forEach(item => {
+      if (item.dataset.index > 0) {
+        item.dataset.index--;
+        console.log(item);
+      } else {
+        item.dataset.index = items.length - 1;
+      }
+    });
+  });
+
+  // 您之前可能在 Codepen 有的初始執行，例如在頁面載入時就觸發動畫一次
+  // 如果需要，可以在這裡呼叫 playTl();
+  // playTl();
+});
+</script>
   </body>
 </html>
